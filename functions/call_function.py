@@ -3,6 +3,7 @@ from functions.ping import ping
 from functions.shutdown import shutdown
 from functions.cutword import cutword
 from functions.help import *
+from functions.help_ru import *
 from auto_git_push import sync_to_github
 from functions.perms import *
 from functions.react import react, react_add, react_remove, react_list, react_listall
@@ -22,6 +23,7 @@ function_map: dict[str, Callable] = {
     "shutdown": shutdown,
     "gitpush" : sync_to_github,
     "help" : help,
+    "help_ru": help_ru,
     "help_music": help_music,
     "help_favlist": help_favlist,
     "help_playlists": help_playlists,
@@ -31,6 +33,16 @@ function_map: dict[str, Callable] = {
     "help_reply": help_reply,
     "help_misc": help_misc,
     "help_admin": help_admin,
+    "help_ru": help_ru,
+    "help_ru_music": help_ru_music,
+    "help_ru_favlist": help_ru_favlist,
+    "help_ru_playlists": help_ru_playlists,
+    "help_ru_lyrics": help_ru_lyrics,
+    "help_ru_ai": help_ru_ai,
+    "help_ru_react": help_ru_react,
+    "help_ru_reply": help_ru_reply,
+    "help_ru_misc": help_ru_misc,
+    "help_ru_admin": help_ru_admin,
     "perms" : perms,
     "perms_set": perms_set,
     "react": react,
@@ -80,6 +92,8 @@ function_alias: dict[str, str] = {
     "ссылка": "link",
     "gamble": "choose",
     "gamba": "choose",
+    "хелп": "help_ru",
+    "помощь": "help_ru",
 }
 
 async def call_function(client, message, content) :
