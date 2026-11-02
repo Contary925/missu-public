@@ -1,8 +1,8 @@
 import subprocess
 from functions.check_owner import check_owner
 
-async def sync_to_github(message):
-    if not await check_owner(message):
+async def sync_to_github(message, admin_allow = False):
+    if not (await check_owner(message) or admin_allow):
         return False
     try:
         await message.channel.send("Uploading to GitHub...")
