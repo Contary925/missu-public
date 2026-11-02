@@ -3,7 +3,8 @@ from classes.user import User
 from functions.check_owner import check_owner
 
 async def perms(client, message, content) :
-    if not await check_owner(message) :
+    if await check_owner(message) == 0:
+        message.channel.send("Command only allowed to be executed by the owner.")
         return
     new_content = "perms_" + content
     #if there's nothing making sense after "alias" then call_function will just pass anyway
