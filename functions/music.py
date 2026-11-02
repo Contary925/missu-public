@@ -17,6 +17,7 @@ music_queues = {} #warning: this is a global variable!
 #be careful when mutating it!
 
 async def play(client, message, content, pushing=False):
+    process_message = None
     shuffle = content.endswith('-s')
     if shuffle:
         content = content[:-2].strip()
@@ -106,7 +107,8 @@ async def play(client, message, content, pushing=False):
         await message.channel.send(f"✅ Added **{songs[0]['title'].replace('*', '\\*')}** to the queue.")
     else:
         await message.channel.send(f"✅ Added **{len(songs)} songs** to the queue.")
-    await process_message.delete()
+    if process_message:
+        await process_message.delete()
     if voice_client.is_playing():
             return
     next_song = queue.next()
@@ -415,6 +417,11 @@ async def play_favlist(message, shuffle=False):
         process_message = await process_message.edit(content=f'Processing songs in background... {count}/{len(favlist)}')
         print(song_url)
         stream_url = await get_stream_url(song_url)
+        if not stream_url:
+            await message.channel.send(
+                f"❌ Song unavailable: {favlist[song_url]}"
+            )
+            continue
         song = {
             "title": favlist[song_url],
             "url": stream_url,

@@ -67,12 +67,13 @@ async def playlist_delete(client, message, args):
 
 async def add_to_playlist(client, message, args):
     user = User(message.author.id)
+    song_name = None
     playlists = user.playlists
     for playlist in playlists:
         if args.startswith(playlist):
             song_name = args.split(playlist, maxsplit=1)[1]
             break
-    if not song_name:
+    if song_name is None:
         return await message.channel.send('❌ Incorrect playlist name!')
     if song_name.strip() == 'np':
         guild_id = message.guild.id
@@ -97,12 +98,13 @@ async def add_to_playlist(client, message, args):
 
 async def remove_from_playlist(client, message, args):
     user = User(message.author.id)
+    index = None
     playlists = user.playlists
     for playlist in playlists:
         if args.startswith(playlist):
             index = args.split(playlist, maxsplit=1)[1]
             break
-    if not index:
+    if index is None:
         return await message.channel.send('❌ Incorrect playlist name!')
     index = index.strip()
     if not index.isdigit() or int(index) > len(user.playlists[playlist]):
@@ -146,6 +148,11 @@ async def play_playlist(client, message, args):
         process_message = await process_message.edit(content=f'Processing songs in background... {count}/{len(playlist)}')
         print(song_url)
         stream_url = await get_stream_url(song_url)
+        if not stream_url:
+            await message.channel.send(
+                f"❌ Song unavailable: {playlist[song_url]}"
+            )
+            continue
         song = {
             "title": playlist[song_url],
             "url": stream_url,
@@ -214,6 +221,11 @@ async def push_playlist(client, message, args):
         process_message = await process_message.edit(content=f'Processing songs in background... {count}/{len(playlist)}')
         print(song_url)
         stream_url = await get_stream_url(song_url)
+        if not stream_url:
+            await message.channel.send(
+                f"❌ Song unavailable: {playlist[song_url]}"
+            )
+            continue
         song = {
             "title": playlist[song_url],
             "url": stream_url,

@@ -13,8 +13,6 @@ async def on_msg(client, message) :
     await check_for_replies(message)
     if message.author.bot :
         return
-    if message.author == client.user:
-        return
     content = None
     if message.content.lower().startswith(prefix1) :
         content = cutword(message.content, prefix1)
