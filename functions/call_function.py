@@ -1,11 +1,8 @@
 from collections.abc import Callable
 from functions.ping import ping
 from functions.shutdown import shutdown
-from functions.interactions import *
-from functions.alias import *
 from functions.cutword import cutword
 from functions.help import *
-from functions.gifs import *
 from auto_git_push import sync_to_github
 from functions.perms import *
 from functions.react import react, react_add, react_remove, react_list, react_listall
@@ -23,30 +20,10 @@ import inspect #to decide which parameters are actually needed to a function in 
 function_map: dict[str, Callable] = {
     "ping" : ping,
     "shutdown": shutdown,
-    "hug": hug,
-    "kiss": kiss,
-    "boop": boop,
-    "bite": bite,
-    "pat": pat,
-    "spank": spank,
-    "lick": lick,
-    "bonk": bonk,
-    "alias": alias,
-    "alias_add": alias_add,
-    "alias_remove": alias_remove,
-    "alias_list" : alias_list,
     "gitpush" : sync_to_github,
     "help" : help,
-    "help_alias": help_alias,
-    "help_gifs": help_gifs,
-    "help_reactions": help_reactions,
-    "help_interactions": help_interactions,
     "help_music": help_music,
     "help_favlist": help_favlist,
-    "gif" : gif,
-    "gif_add" : gif_add,
-    "gif_remove" : gif_remove,
-    "gif_list" : gif_list,
     "perms" : perms,
     "perms_set": perms_set,
     "react": react,
@@ -83,27 +60,6 @@ function_map: dict[str, Callable] = {
 }
 
 function_alias: dict[str, str] = {
-    "хаг" : "hug",
-    "цем" : "kiss",
-    "кисс" : "kiss",
-    "тык" : "boop",
-    "пинг" : "ping",
-    "кусь": "bite",
-    "ням": "bite",
-    "pet" : "pat",
-    "пат" : "pat",
-    "бонк": "bonk",
-    "боньк": "bonk",
-    "спанк" : "spank",
-    "шпаньк" : "spank",
-    "лизь" : "lick",
-    "гиф" : "gif",
-    "gif_адд" : "gif_add",
-    "gif_удалить" : "gif_remove",
-    "gif_убрать" : "gif_remove",
-    "gif_ремув" : "gif_remove",
-    "gif_лист" : "gif_list",
-    "gif_список" : "gif_list",
     "reaction" : "react",
     "next" : "skip",
     "playfav" : "play_favlist",

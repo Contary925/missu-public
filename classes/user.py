@@ -1,6 +1,5 @@
 import discord
 import json
-from classes.gif import Gif
 
 class User() :
 
@@ -8,8 +7,6 @@ class User() :
         self.id = str(id)
         self.name = name
         self.data = self.read_data(self.id)
-        self.alias = self.read_alias(self.data)
-        self.interactions = self.read_interactions(self.data)
         self.perms = self.read_perms(self.data)
         self.reactions = self.read_reactions(self.data)
         self.responses = self.read_responses(self.data)
@@ -37,16 +34,6 @@ class User() :
         with open('shared/user_data.json', 'w') as f:
             json.dump(data, f, indent=4)
         self.data[key] = value
-        
-    def read_alias(self, data) -> dict :
-        if not "alias" in data :
-            self.data_update("alias", {})
-        return data["alias"]
-
-    def read_interactions(self, data) -> dict:
-        if not "interactions" in data :
-            self.data_update("interactions", {})
-        return data["interactions"]
 
     def read_perms(self, data) -> str:
         if not "perms" in data :
@@ -121,9 +108,7 @@ class User() :
             result += f'{index}. {title}\n'
         if not result:
             return 'No songs on this page.'
-        return result
-
-                
+        return result     
 
     def add_reaction(self, text, reaction) :
         if text in self.reactions :
@@ -209,78 +194,7 @@ class User() :
                 json.dump(data, f, indent=4)
             return 1
         return 0
-
-    def check_interaction(self, other, type) :
-        if not type in self.interactions :
-            return 0
-        if not other.id in self.interactions[type] :
-            return 0
-        return self.interactions[type][other.id]
-
-    async def get_random_gif(self, type, message):
-        url = Gif(None, None, type, None).select_random()
-        if not url:
-            await message.channel.send("Looks like there are no gifs of the specified type. Consider adding some before running this command.")
-            return None
-        return url
     
-    async def hug(self, other, message) :
-        url = await self.get_random_gif("hug", message)
-        if not url:  #a message already sent by the get_random_gif method
-            return
-        num_hugs = self.add_interaction(other, "hug")
-        if num_hugs == 1 :
-            await self.send_embed(message, f"{self.name} hugs {other.name}! That's their first hug!", url)
-        else :
-            await self.send_embed(message, f"{self.name} hugs {other.name}! That's {num_hugs} hugs now!", url)
-    
-    async def kiss(self, other, message) :
-        url = await self.get_random_gif("kiss", message)
-        if not url:
-            return
-        num_kisses = self.add_interaction(other, "kiss")
-        if num_kisses == 1 :
-            await self.send_embed(message, f"{self.name} kisses {other.name}! That's their first kiss!", url)
-        else :
-            await self.send_embed(message, f"{self.name} kisses {other.name}! That's {num_kisses} kisses now!", url)
-
-    async def bite(self, other, message) :
-        url = await self.get_random_gif("bite", message)
-        if not url:
-            return
-        num_bites = self.add_interaction(other, "bite")
-        if num_bites == 1 :
-            await self.send_embed(message, f"{self.name} bites {other.name}! That's their first bite!", url)
-        else :
-            await self.send_embed(message, f"{self.name} bites {other.name}! That's {num_bites} bites now!", url)
-
-    async def pat(self, other, message) :
-        url = await self.get_random_gif("pat", message)
-        num_pats = self.add_interaction(other, "pat")
-        if num_pats == 1 :
-            await self.send_embed(message, f"{self.name} pats {other.name}! That's their first pat!", url)
-        else :
-            await self.send_embed(message, f"{self.name} pats {other.name}! That's {num_pats} pats now!", url)
-
-    async def bonk(self, other, message) :
-        url = await self.get_random_gif("bonk", message)
-        num_bonks = self.add_interaction(other, "bonk")
-        if num_bonks == 1 :
-            await self.send_embed(message, f"{self.name} bonks {other.name}! That's their first bonk!", url)
-        else :
-            await self.send_embed(message, f"{self.name} bonks {other.name}! That's {num_bonks} bonks now!", url)
-
-    async def spank(self, other, message) :
-        num_spanks = self.add_interaction(other, "spank")
-        if num_spanks == 1 :
-            await message.channel.send(f"{self.name} gave <@{other.id}> a spank! That's their first spank!")
-        else :
-            await message.channel.send(f"{self.name} gave <@{other.id}> a spank! That's {num_spanks} spanks now!")
-
-    async def lick(self,  message) :
-        url = await self.get_random_gif("lick", message)
-        await self.send_embed(message, None, url)
-
     async def send_embed(self, message, title, url) :
         embed = discord.Embed(
             title=title,

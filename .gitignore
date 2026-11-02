@@ -7,7 +7,7 @@ wheels/
 *.egg-info
 
 #Special sensitive info
-ID.pi
+ID.py
 
 # Virtual environments
 .venv
