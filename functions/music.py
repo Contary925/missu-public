@@ -81,13 +81,13 @@ async def play(client, message, content, pushing=False):
     for song in songs:
         if process_message:
             await process_message.edit(content=f'Processing songs in background... {counter+1}/{len(songs)}')
-            if not 'url' in song:
-                result = await get_youtube_info(song['webpage_url'])
-                if not result:
-                    await message.channel.send(f"❌ The song **{song['title']}** is unavailable.")
-                    continue
-                song = result[0]
-            print(song)
+        if not 'url' in song:
+            result = await get_youtube_info(song['webpage_url'])
+            if not result:
+                await message.channel.send(f"❌ The song **{song['title']}** is unavailable.")
+                continue
+            song = result[0]
+        print(song)
         if pushing:
             queue.insert(counter, song)    
         else:

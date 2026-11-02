@@ -64,7 +64,7 @@ async def ai_mode(client, message, content):
         return
     response_data = response.model_dump()
     print(response_data)
-    full_response = f"Response from **{response.model}**:\n\n"
+    full_response = f"Response from **{response.model}**:\n\n{response.choices[0].message.content}"
     await send_long_message(message.channel, full_response)
     await waiting_msg.delete()
 
@@ -114,7 +114,7 @@ async def ai_mode_deep(client, message, content):
 
     print(response_data)
 
-    full_response = f"Response from **{response.model}**:\n\n"
+    full_response = f"Response from **{response.model}**:\n\n{response.choices[0].message.content}"
     await send_long_message(message.channel, full_response)
     await waiting_msg.delete()
 
