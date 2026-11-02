@@ -1,6 +1,7 @@
 
 import functions.call_function
 
+
 async def help_ru(client, message, content):
     new_content = "help_ru_" + content.strip().lower()
     called = await functions.call_function.call_function(
@@ -8,33 +9,34 @@ async def help_ru(client, message, content):
     )
 
     if not called:
-        text = """# Привет! Я **Missu**, Discord-бот Kissu, написанный на discord.py.
+        text = """# Привет! Я **Missu**, личный Discord-бот Kissu, написанный на discord.py.
 Используй префикс **uwu** (или **уву**), чтобы вызвать мою команду.
 
 **Музыка:** `play`, `pause`, `resume`, `skip`, `stop`, `queue`, `push`, `playnum`, `shuffle`, `repeat`, `link`.
-→ `uwu help_ru music`
+→ `uwu помощь music`
 
 **Плейлисты и избранное:** сохраняй, сортируй и воспроизводи музыку.
-→ `uwu help_ru playlists` | `uwu help_ru favlist`
+→ `uwu помощь playlists` | `uwu помощь favlist`
 
 **Тексты песен:** поиск текстов через Genius.
-→ `uwu help_ru lyrics`
+→ `uwu помощь lyrics`
 
 **ИИ:** общение с разными моделями и DeepSeek с веб-поиском.
-→ `uwu help_ru ai`
+→ `uwu помощь ai`
 
 **Реакции и ответы:** автоматические реакции и ответы на сообщения.
-→ `uwu help_ru react` | `uwu help_ru reply`
+→ `uwu помощь react` | `uwu помощь reply`
 
 **Разное:** `ping`, `choose`.
-→ `uwu help_ru misc`
+→ `uwu помощь misc`
 
 **Только владелец:** `shutdown`, `gitpush`, `perms set`.
 **Администраторы:** `reboot`.
 
 **Алиасы:** `next` = `skip` · `playfav` = `play favlist` · `pl` = `playlist` · `pld` = `playlistdefault` · `текст` = `lyrics` · `ии` = `ai` · `deepseek` / `дипсик` = `ai_deep` · `ссылка` = `link` · `gamba` / `gamble` = `choose` · `reaction` = `react`.
 
-Используй **uwu help_ru [category]**, чтобы узнать больше о конкретной функции!"""
+Для вызова этой справки также можно использовать `uwu хелп`.
+Используй **uwu помощь [category]**, чтобы узнать больше о конкретной функции!"""
         await message.channel.send(text)
 
 
@@ -64,7 +66,7 @@ async def help_ru_music(message):
 11. `uwu link` (или `uwu ссылка`) — получить ссылку на текущую песню.
 12. `uwu play np` — добавить текущую песню в очередь.
 
-Подробнее о сохранённой музыке: `uwu help_ru favlist` или `uwu help_ru playlists`."""
+Подробнее о сохранённой музыке: `uwu помощь favlist` или `uwu помощь playlists`."""
     await message.channel.send(text)
 
 
