@@ -18,6 +18,8 @@ async def choose(client, message, content):
     await choose_random_item(client, message, content)
 
 async def choose_random_item(client, message, content):
+    if content.strip() == '':
+        return await message.channel.send('Nothing to choose from!')
     user = User(message.author.id)
     user_gamble_lists = user.gamble_lists
     mutations = None
