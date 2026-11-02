@@ -6,45 +6,33 @@ async def help(client, message, content):
         client, message, new_content
     )
     if not called:  # send default help message
-        text = """# Hello! I am **Missu**, Kissu's bot for personal use made with discord.py.
-The prefix to use me is '**uwu**' (or '**уву**') - use it every time you want to call me!
+        text = """# Hello! I'm **Missu**, Kissu's bot for personal use made with discord.py.
+        Use **uwu** (or **уву**) as my command prefix.
 
-Here are some of my commands:
+        **Music:** `play`, `pause`, `resume`, `skip`, `stop`, `queue`, `push`, `playnum`, `shuffle`, `repeat`, `link`.
+        → `uwu help music`
 
-**Music**: play, pause, resume, skip, stop, queue, push, playnum, shuffle, repeat, link.
-Run **uwu help music** for more info!
+        **Playlists & favlist:** save, organize and play your music.
+        → `uwu help playlists` | `uwu help favlist`
 
-**Playlists and favlist**: save songs and organize them into playlists.
-Run **uwu help playlists** or **uwu help favlist** for more info!
+        **Lyrics:** search for song lyrics using Genius.
+        → `uwu help lyrics`
 
-**Lyrics**: search for song lyrics using Genius.
-Run **uwu help lyrics** for more info!
+        **AI:** chat with AI models or use DeepSeek with web search.
+        → `uwu help ai`
 
-**AI**: ask AI models questions, or use DeepSeek with web search.
-Run **uwu help ai** for more info!
+        **Reactions & replies:** automatic reactions and responses to messages.
+        → `uwu help react` | `uwu help reply`
 
-**Reactions and replies**: make me react to messages or automatically reply to certain phrases.
-Run **uwu help react** or **uwu help reply** for more info!
+        **Misc:** `ping`, `choose`.
+        → `uwu help misc`
 
-**Misc.**: ping, choose.
-Run **uwu help misc** for more info!
+        **Owner:** `shutdown`, `gitpush`, `perms set`.
+        **Admin:** `reboot`.
 
-**Owner only**: shutdown, gitpush, perms set.
-**Admin only**: reboot.
+        **Aliases:** `next` = `skip` · `playfav` = `play favlist` · `pl` = `playlist` · `pld` = `playlistdefault` · `текст` = `lyrics` · `ии` = `ai` · `deepseek` / `дипсик` = `ai_deep` · `ссылка` = `link` · `gamba` / `gamble` = `choose` · `reaction` = `react`.
 
-You can also use command aliases:
-- **next** = skip
-- **playfav** = play favlist
-- **pl** = playlist
-- **pld** = playlistdefault
-- **текст** = lyrics
-- **ии** = ai
-- **deepseek / дипсик** = ai_deep
-- **ссылка** = link
-- **gamba / gamble** = choose
-- **reaction** = react
-
-Try **uwu help [category]** to learn more about a specific feature!"""
+        Use **uwu help [category]** for more information!"""
         await message.channel.send(text)
 
 async def help_music(message):

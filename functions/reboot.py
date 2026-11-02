@@ -7,7 +7,7 @@ async def reboot(client, message):
     user = User(message.author.id, None)
     if not user.perms == "administrator":
         return await message.channel.send("This command can only be executed by an admin.")
-    await shutdown(client, message)
+    await shutdown(client, message, admin_allow=True)
     uv = shutil.which("uv")
     if uv is None:
         raise RuntimeError("uv not found")
