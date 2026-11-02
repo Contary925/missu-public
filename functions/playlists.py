@@ -107,7 +107,11 @@ async def remove_from_playlist(client, message, args):
     if index is None:
         return await message.channel.send('❌ Incorrect playlist name!')
     index = index.strip()
-    if not index.isdigit() or int(index) > len(user.playlists[playlist]):
+    if (
+        not index.isdigit()
+        or int(index) < 1
+        or int(index) > len(user.playlists[playlist])
+    ):
         return await message.channel.send("❌ Invalid index!")
     song_title = await user.remove_from_playlist(playlist, int(index))
     return await message.channel.send(f'✅ Removed the song "{song_title.replace('*', '\\*')}" from the playlist "{playlist}"!')
