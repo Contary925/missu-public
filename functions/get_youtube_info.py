@@ -71,8 +71,6 @@ async def get_youtube_info(query: str):
             stream_url = audio_formats[-1]["url"]
         elif formats:
             stream_url = formats[-1].get("url")
-        else:
-            stream_url = info["formats"][-1].get("url")
     if not stream_url:
         return []
     return [{
