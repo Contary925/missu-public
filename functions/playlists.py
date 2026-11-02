@@ -90,6 +90,8 @@ async def add_to_playlist(client, message, args):
         count += 1
         await user.add_to_playlist(playlist, song)
     match count:
+        case 0:
+            return await message.channel.send("❌ Couldn't find your song...")
         case 1:
             title = song["title"]
             return await message.channel.send(f'✅ Added the song **{title.replace('*', '\\*')}** to playlist **{playlist}**!')
@@ -148,15 +150,14 @@ async def play_playlist(client, message, args):
     count = 0
     process_message = await message.channel.send('Processing songs in background...')
     for song_url in playlist:
-        count += 1
         process_message = await process_message.edit(content=f'Processing songs in background... {count}/{len(playlist)}')
-        print(song_url)
         stream_url = await get_stream_url(song_url)
         if not stream_url:
             await message.channel.send(
                 f"❌ Song unavailable: {playlist[song_url]}"
             )
             continue
+        count += 1
         song = {
             "title": playlist[song_url],
             "url": stream_url,
@@ -221,7 +222,6 @@ async def push_playlist(client, message, args):
     count = 0
     process_message = await message.channel.send('Processing songs in background...')
     for song_url in playlist:
-        count += 1
         process_message = await process_message.edit(content=f'Processing songs in background... {count}/{len(playlist)}')
         print(song_url)
         stream_url = await get_stream_url(song_url)
@@ -230,6 +230,7 @@ async def push_playlist(client, message, args):
                 f"❌ Song unavailable: {playlist[song_url]}"
             )
             continue
+        count += 1
         song = {
             "title": playlist[song_url],
             "url": stream_url,

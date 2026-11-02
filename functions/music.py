@@ -78,6 +78,7 @@ async def play(client, message, content, pushing=False):
     if shuffle:
         random.shuffle(songs)
     counter = 0
+    added_songs = []
     for song in songs:
         if process_message:
             await process_message.edit(content=f'Processing songs in background... {counter+1}/{len(songs)}')
@@ -87,11 +88,11 @@ async def play(client, message, content, pushing=False):
                 await message.channel.send(f"❌ The song **{song['title']}** is unavailable.")
                 continue
             song = result[0]
-        print(song)
         if pushing:
             queue.insert(counter, song)    
         else:
             queue.add(song)
+        added_songs.append(song)
         counter += 1 
         if voice_client.is_playing():
             continue
@@ -106,7 +107,7 @@ async def play(client, message, content, pushing=False):
     if counter == 0:
         await message.channel.send("❌ Couldn't add any songs.")
     elif counter == 1:
-        await message.channel.send(f"✅ Added **{songs[0]['title'].replace('*', '\\*')}** to the queue.")
+        await message.channel.send(f"✅ Added **{added_songs[0]['title'].replace('*', '\\*')}** to the queue.")
     else:
         await message.channel.send(f"✅ Added **{counter} songs** to the queue.")
     if process_message:

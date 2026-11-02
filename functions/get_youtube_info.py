@@ -66,16 +66,15 @@ async def get_youtube_info(query: str):
             f for f in info["formats"]
             if f.get("vcodec") == "none" and f.get("url")
         ]
+        formats = info.get("formats") or []
         if audio_formats:
-            stream_url = audio_formats[-1].get("url")
+            stream_url = audio_formats[-1]["url"]
+        elif formats:
+            stream_url = formats[-1].get("url")
         else:
             stream_url = info["formats"][-1].get("url")
     if not stream_url:
         return []
-    print(f"Title: {info.get('title')}")
-    print(f"URL exists: {bool(stream_url)}")
-    print(f"URL is webpage URL: {stream_url == info.get('webpage_url')}")
-    print(f"Formats count: {len(info.get('formats', []))}")
     return [{
         "url": stream_url,
         "webpage_url": info.get("webpage_url"),
