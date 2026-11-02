@@ -51,15 +51,6 @@ async def find_lyrics(client, message, content):
                     "Genius returned an unexpected response."
                 )
                 return
-            try:
-                data = json.loads(body)
-            except json.JSONDecodeError:
-                print("Invalid JSON:", body[:1000])
-
-                await message.channel.send(
-                    "Couldn't parse Genius response."
-                )
-                return
     hits = data.get("response", {}).get("hits", [])
     if not hits:
         await message.channel.send("Nothing found on Genius.")
