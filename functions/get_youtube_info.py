@@ -15,20 +15,10 @@ YTDLP_OPTIONS = {
     }
 }
 
-# Pre-instantiate these globally once to save CPU and RAM cycles
-ydl_client = yt_dlp.YoutubeDL(YTDLP_OPTIONS)
-ydl_playlist_client = yt_dlp.YoutubeDL({**YTDLP_OPTIONS})
-
 async def get_youtube_info(query: str):
     def extract():
         if query.startswith(("http://", "https://")):
-            parsed = urlparse(query)
-            params = parse_qs(parsed.query)
-
-            if "list" in params and "v" not in params:
-                options = YTDLP_OPTIONS
-            else:
-                options = YTDLP_OPTIONS
+            options = YTDLP_OPTIONS
         else:
             options = {
                 **YTDLP_OPTIONS,
@@ -72,7 +62,10 @@ async def get_youtube_info(query: str):
 
     stream_url = info.get("url")
     if not stream_url and info.get("formats"):
-        audio_formats = [f for f in info["formats"] if f.get("vcodec") == "none"]
+        audio_formats = [
+            f for f in info["formats"]
+            if f.get("vcodec") == "none" and f.get("url")
+        ]
         if audio_formats:
             stream_url = audio_formats[-1].get("url")
         else:
