@@ -178,6 +178,7 @@ async def play_playlist(client, message, args):
     await process_message.delete()
     if count == 0:
         await message.channel.send("❌ Couldn't add any songs.")
+        return
     elif count == 1:
         await message.channel.send("✅ Added one song to the queue.")
     else:
@@ -254,6 +255,7 @@ async def push_playlist(client, message, args):
     await process_message.delete()
     if count == 0:
         await message.channel.send("❌ Couldn't add any songs.")
+        return
     elif count == 1:
         await message.channel.send("✅ Added one song to the queue.")
     else:

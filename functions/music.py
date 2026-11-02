@@ -443,10 +443,13 @@ async def play_favlist(message, shuffle=False):
                 message.channel,
             )
     await process_message.delete()
-    if len(favlist) == 1:
+    if count == 0:
+        await message.channel.send("❌ Couldn't add any songs from your favlist...")
+        return
+    if count == 1:
         await message.channel.send(f"✅ Added one song to the queue.")
     else:
-        await message.channel.send(f"✅ Added **{len(favlist)} songs** to the queue.")
+        await message.channel.send(f"✅ Added **{count} songs** to the queue.")
     if voice_client.is_playing():
             return
     next_song = queue.next()
