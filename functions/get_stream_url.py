@@ -6,7 +6,7 @@ YTDL_OPTS = {
     'skip_download': True,
     'quiet': True,
     'no_warnings': True,
-    'nocheckcertificate': True,
+    'nocheckcertificate': False,
     'youtube_include_dash_manifest': False, 
 }
 ytdl = yt_dlp.YoutubeDL(YTDL_OPTS)

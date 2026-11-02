@@ -9,7 +9,7 @@ YTDLP_OPTIONS = {
     'skip_download': True,
     'force_generic_extractor': False,
     'youtube_include_dash_manifest': False,
-    'nocheckcertificate': True,
+    'nocheckcertificate': False,
     'http_headers': {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     }
