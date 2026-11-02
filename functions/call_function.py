@@ -24,7 +24,7 @@ function_map: dict[str, Callable] = {
     "help" : help,
     "help_music": help_music,
     "help_favlist": help_favlist,
-    "help_playlist": help_playlists,
+    "help_playlists": help_playlists,
     "help_lyrics": help_lyrics,
     "help_ai": help_ai,
     "help_react": help_react,
