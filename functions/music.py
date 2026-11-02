@@ -417,6 +417,7 @@ async def play_favlist(message, shuffle=False):
     count = 0
     process_message = await message.channel.send('Processing songs in background...')
     for processed, song_url in enumerate(favlist, start=1):
+        process_message = await process_message.edit(content=f'Processing songs in background... {processed}/{len(favlist)}')
         stream_url = await get_stream_url(song_url)
         if not stream_url:
             await message.channel.send(
@@ -424,7 +425,6 @@ async def play_favlist(message, shuffle=False):
             )
             continue
         count += 1
-        process_message = await process_message.edit(content=f'Processing songs in background... {processed}/{len(favlist)}')
         song = {
             "title": favlist[song_url],
             "url": stream_url,
