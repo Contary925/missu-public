@@ -94,6 +94,16 @@ function_alias: dict[str, str] = {
     "gamba": "choose",
     "хелп": "help_ru",
     "помощь": "help_ru",
+    "справка": "help_ru",
+    "help_ru_музыка": "help_ru_music",
+    "help_ru_фавлист": "help_ru_favlist",
+    "help_ru_плейлисты": "help_ru_playlists",
+    "help_ru_текст": "help_ru_lyrics",
+    "help_ru_ии": "help_ru_ai",
+    "help_ru_реакции": "help_ru_react",
+    "help_ru_ответы": "help_ru_reply",
+    "help_ru_разное": "help_ru_misc",
+    "help_ru_админ": "help_ru_admin",
 }
 
 async def call_function(client, message, content) :
