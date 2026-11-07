@@ -8,11 +8,13 @@ class User() :
         self.name = name
         self.data = self.read_data(self.id)
         self.perms = self.read_perms(self.data)
+        self.alias = self.read_alias(self.data)
         self.reactions = self.read_reactions(self.data)
         self.responses = self.read_responses(self.data)
         self.favlist = self.read_favlist(self.data) #music favlist
         self.playlists = self.data.get('playlists', {})
         self.default_playlist = self.data.get('default_playlist', None)
+        self.playlists_visibility = self.data.get("playlists_visibility", False)
         self.gamble_lists = self.data.get('gamble_lists', {})
 
     def read_data(self, id) -> dict :
@@ -35,6 +37,11 @@ class User() :
             json.dump(data, f, indent=4)
         self.data[key] = value
 
+    def read_alias(self, data) -> dict :
+        if not "alias" in data :
+            self.data_update("alias", {})
+        return data["alias"]
+    
     def read_perms(self, data) -> str:
         if not "perms" in data :
             self.data_update("perms", "default")
@@ -230,3 +237,7 @@ class User() :
         del self.playlists[playlist][song_url]
         self.data_update('playlists', self.playlists)
         return title
+
+    async def set_playlists_visibility(self, value):
+        self.data_update("playlists_visibility", value)
+        self.playlists_visibility = value

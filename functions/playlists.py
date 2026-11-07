@@ -29,6 +29,12 @@ async def playlist(client, message, content):
             await show_playlist(client, message, args)
         case 'showall':
             await show_playlists(client, message)
+        case 'visibility': 
+            await set_playlists_visibility(message, args)
+        case 'browse':
+            await view_users_playlists(client, message, args)
+        case 'copy':
+            await copy_users_playlist(client, message, args)
         case _:
             await message.channel.send('Invalid syntax! Usage: uwu playlist [create/delete/add/remove/play] [arguments]. Example: uwu playlist create Three Days Grace')
 
@@ -342,3 +348,155 @@ async def show_playlists(client, message):
     if count == 0:
         return await message.channel.send("❌ You don't have any playlists!")
     return await message.channel.send(text)
+
+async def set_playlists_visibility(message, args):
+    user = User(message.author.id)
+    match args.casefold():
+        case "on":
+            await user.set_playlists_visibility(True)
+            return await message.channel.send("Done! Now other users can view your playlists.")
+        case "off":
+            await user.set_playlists_visibility(False)
+            return await message.channel.send("Done! Now other users cannot view your playlists.")
+        case _:
+            return await message.channel.send("Invalid syntax! Usage: uwu playlist visibility on/off.")
+
+async def view_users_playlists(client, message, args):
+    self = User(message.author.id)
+    pl_name = ""
+    if "=" in args:
+        [mention, pl_name] = args.split("=", maxsplit=1)
+        mention = mention.strip().casefold()
+        pl_name = pl_name.strip()
+    else:
+        mention = args.strip().casefold()
+    if mention in self.alias :
+        mention = self.alias[mention]
+    try:
+        other_id = mention.split("<@")[1].split(">")[0]
+    except Exception as e:
+        await message.channel.send("Could not find this user! Correctly mention a user or use alias.")
+        return 0
+    other_info = await client.fetch_user(other_id)
+    other_name = other_info.display_name 
+    other = User(other_id, other_name)
+    if not other.playlists_visibility:
+        return await message.channel.send("This user has not allowed others to view their playlists!")
+    else:
+        if pl_name == "": #"view all playlists" mode
+            text = ''
+            count = 0
+            for playlist in other.playlists:
+                count += 1
+                text += f'{count}. **{playlist}**\n'
+            if count == 0:
+                return await message.channel.send("❌ This user doesn't have any playlists!")
+            return await message.channel.send(text)
+        else: #"view this playlist" mode
+            if pl_name not in other.playlists:
+                return await message.channel.send(
+                    f'❌ Cannot find playlist "{pl_name}"!'
+                )
+            playlist = other.playlists[pl_name]
+            if not playlist:
+                return await message.channel.send(
+                    f'❌ The playlist "{pl_name}" is empty!'
+                )
+            songs = list(playlist.values())
+            total_pages = (len(songs) + 19) // 20
+            page = 0
+            def get_page(page):
+                start = page * 20
+                end = start + 20
+                text = f"Showing {other.name}\'s playlist **{pl_name.strip()}**\n"
+                for index, title in enumerate(
+                    songs[start:end],
+                    start=start + 1
+                ):
+                    text += f'{index}. {title}\n'
+                return text
+            sent_message = await message.channel.send(get_page(page))
+            if total_pages <= 1:
+                return
+            await sent_message.add_reaction('⬅️')
+            await sent_message.add_reaction('➡️')
+            def check(reaction, reactor):
+                return (
+                    reactor.id == message.author.id
+                    and reaction.message.id == sent_message.id
+                    and str(reaction.emoji) in ('⬅️', '➡️')
+                )
+            while True:
+                try:
+                    reaction, reactor = await client.wait_for(
+                        'reaction_add',
+                        timeout=60.0,
+                        check=check
+                    )
+                except asyncio.TimeoutError:
+                    break
+                if str(reaction.emoji) == '➡️':
+                    page = (page + 1) % total_pages
+                    await sent_message.edit(
+                        content=get_page(page)
+                    )
+                elif str(reaction.emoji) == '⬅️':
+                    page = (page - 1) % total_pages
+                    await sent_message.edit(
+                        content=get_page(page)
+                    )
+                await sent_message.remove_reaction(
+                    reaction.emoji,
+                    reactor
+                )
+
+async def copy_users_playlist(client, message, args):
+    self = User(message.author.id)
+    pl_name = ""
+    pl_alias = "" #defaults to pl_name if not set
+    if "=" in args:
+        [mention, pl_name_and_alias] = args.split("=", maxsplit=1)
+        mention = mention.strip().casefold()
+        if " AS " in pl_name_and_alias:
+            [pl_name, pl_alias] = pl_name_and_alias.split(" AS ", maxsplit=1)
+            pl_name = pl_name.strip()
+            pl_alias = pl_alias.strip()
+        else:
+            pl_name = pl_name_and_alias.strip()
+            pl_alias = pl_name
+    else:
+        await message.channel.send("Invalid syntax! Usage: uwu playlist copy mention = playlist name.")
+    if mention in self.alias :
+        mention = self.alias[mention]
+    try:
+        other_id = mention.split("<@")[1].split(">")[0]
+    except Exception as e:
+        await message.channel.send("Could not find this user! Correctly mention a user or use alias.")
+        return 0
+    if pl_alias in self.playlists:
+        return await message.channel.send(f"You already have a playlist **{pl_alias}**! Delete it or alias it as something else!")
+    other_info = await client.fetch_user(other_id)
+    other_name = other_info.display_name 
+    other = User(other_id, other_name)
+    if not other.playlists_visibility:
+        return await message.channel.send("This user has not allowed others to view their playlists!")
+    else:
+        if pl_name not in other.playlists:
+            return await message.channel.send(
+                f'❌ Cannot find playlist "{pl_name}"!'
+            )
+        playlist = other.playlists[pl_name]
+        if not playlist:
+            return await message.channel.send(
+                f'❌ The playlist "{pl_name}" is empty!'
+            )
+        await self.playlist_create(pl_alias)
+        counter = 0
+        for song_url in playlist:
+            song = {
+                "title": playlist[song_url],
+                "webpage_url": song_url
+            }
+            counter += 1
+            await self.add_to_playlist(pl_alias, song)
+        await message.channel.send(f"Created a playlist **{pl_alias}** and added {counter} songs!")

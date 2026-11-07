@@ -10,6 +10,7 @@ from functions.react import react, react_add, react_remove, react_list, react_li
 from functions.reply import reply, reply_add, reply_remove, reply_list, reply_listall
 from functions.music import play, stop, skip, queue, shuffle, pause, resume, push, playnum, favlist, repeat, play_favlist, now_playing
 from functions.press_F import press_F
+from functions.alias import *
 from functions.playlists import playlist, playlist_default
 from functions.find_lyrics import find_lyrics
 from functions.get_link import get_link
@@ -77,6 +78,10 @@ function_map: dict[str, Callable] = {
     "link": get_link,
     "playlistdefault": playlist_default,
     "choose": choose,
+    "alias": alias,
+    "alias_add": alias_add,
+    "alias_remove": alias_remove,
+    "alias_list": alias_list,
 }
 
 function_alias: dict[str, str] = {
