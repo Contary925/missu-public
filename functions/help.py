@@ -44,10 +44,10 @@ async def help_music(message):
 You must be in a voice channel to use these commands. If music is already playing, new songs will be added to the queue.
 
 1. `uwu play [source]` — play songs from a YouTube search, video link or playlist link.
-   Example: `uwu play Toram Online BGM - King Piton`
-   Add `-s` to shuffle the results: `uwu play [source] -s`.
+   Example: `uwu play Toram Online BGM - King Piton`.
+   Add `-s` to shuffle playlist results: `uwu play [source] -s`.
 
-2. `uwu play [prompt] -select [count]` — choose a song from search results instead of playing the first match.
+2. `uwu play [prompt] -select [count]` — choose a song from search results instead of automatically playing the first match.
    By default, 5 results are shown; you can request up to 10.
    Example: `uwu play Toram Online BGM -select 10`.
 
@@ -55,17 +55,19 @@ You must be in a voice channel to use these commands. If music is already playin
 4. `uwu skip` (or `uwu next`) — skip the current song.
 5. `uwu stop` — stop playback, disconnect and clear the queue.
 6. `uwu queue` — view the queue. Use `uwu queue remove [index]` or `uwu queue remove last` to remove a song.
-
 7. `uwu push [index]` — move a queued song to the next position.
    Use `uwu push last` to move the last song, or `uwu push [source]` to add new songs to the front of the queue.
-
-8. `uwu playnum [index]` — play a queued song immediately, skipping the current one. Also supports `last`.
+8. `uwu playnum [index]` — play a queued song immediately. Also supports `last`.
 9. `uwu shuffle` — shuffle the queue.
-10. `uwu repeat` — play the current song once again after it finishes.
+10. `uwu repeat` — play the current song again after it finishes.
 11. `uwu link` (or `uwu ссылка`) — get a link to the currently playing song.
 12. `uwu play np` — add the currently playing song to the queue.
 
-For saved music, see `uwu help favlist` or `uwu help playlists`."""
+Missu supports personal music collections:
+- `uwu favlist` — manage your favourite songs.
+- `uwu playlist` — create, manage and share playlists.
+
+See `uwu help favlist` and `uwu help playlists` for details."""
     await message.channel.send(text)
 
 
@@ -75,36 +77,48 @@ async def help_favlist(message):
 2. `uwu favlist add [source]` — add a song using a YouTube search prompt or video link. Playlist links are not supported.
 3. `uwu favlist add np` — add the currently playing song.
 4. `uwu favlist remove [index]` — remove a song by its index.
-   Example: `uwu favlist remove 3`.
-5. `uwu favlist clear` — remove all songs from your favlist.
+5. `uwu favlist clear` — clear your favlist.
 6. `uwu play favlist` (or `uwu playfav`) — add all saved songs to the queue.
    Add `-s` to shuffle them: `uwu play favlist -s`.
 
-If music is already playing, saved songs will be added to the queue. Note: this is faster than using YouTube playlists!"""
+**Explore other users' music:**
+7. `uwu favlist browse [@user]` — view another user's favlist.
+   Personal aliases can be used instead of mentions.
+
+**Visibility settings:**
+8. `uwu playlist visibility on` — allow other users to view your playlists and favlist.
+9. `uwu playlist visibility off` — hide your playlists and favlist from other users.
+
+Visibility is disabled by default. You can only browse another user's music if they have enabled visibility.
+
+If music is already playing, saved songs will be added to the queue."""
     await message.channel.send(text)
 
 
 async def help_playlists(message):
-    text = """# Save songs to your own playlists!
-1. `uwu playlist create [name]` — create a new playlist.
-   Example: `uwu playlist create Three Days Grace`.
-2. `uwu playlist delete [name]` — delete a playlist.
-3. `uwu playlist add [name] [source]` — add songs from a YouTube search, video link or playlist link.
-   Use `np` to add the currently playing song. Example: `uwu playlist add Three Days Grace np`.
-   Short form: `uwu playlist + [name] [source]`.
-4. `uwu playlist remove [name] [index]` — remove a song. Short form: `uwu playlist - [name] [index]`.
-5. `uwu playlist show [name]` — view a playlist.
-6. `uwu playlist showall` — view all your playlists.
-7. `uwu playlist play [name]` — add playlist songs to the queue.
-8. `uwu playlist push [name]` — add playlist songs to the front of the queue.
-   Add `-s` to shuffle: `uwu playlist play Three Days Grace -s`.
+    text = """# Create and manage playlists!
+**Your playlists:**
+- `uwu playlist create [name]` / `delete [name]` — create or delete a playlist.
+- `uwu playlist add [name] [source]` — add songs from YouTube search, video or playlist links. Use `np` for the currently playing song. Alias: `+`.
+- `uwu playlist remove [name] [index]` — remove a song. Alias: `-`.
+- `uwu playlist show [name]` — view a playlist.
+- `uwu playlist showall` — list your playlists.
+- `uwu playlist play [name]` / `push [name]` — add songs to the queue or its front. Add `-s` to shuffle.
 
-**Default playlist:** use `uwu playlistdefault set [name]` to set one.
-After that, you can omit the playlist name in commands:
-`uwu playlistdefault play`, `uwu playlistdefault show`, `uwu playlistdefault add [source]`, etc.
-Short alias: `uwu pld set [name]`.
+**Other users' playlists:**
+- `uwu playlist browse [@user]` — view their playlists. Add `= [playlist name]` to view a specific one.
+- `uwu playlist copy [@user] = [playlist name]` — copy a playlist. Add `AS [new name]` to rename your copy.
+- Personal aliases can replace user mentions.
 
-Playlists are personal to each user."""
+**Visibility:**
+- `uwu playlist visibility on` / `off` — allow or deny access to your playlists and favlist.
+- Disabled by default. Other users cannot browse or copy your collections without permission.
+
+**Default playlist:**
+- `uwu playlistdefault set [name]` (or `uwu pld set [name]`) — choose your default playlist.
+- Use `uwu playlistdefault [command]` to omit its name in supported commands, e.g. `play`, `show`, `add`.
+
+Playlists are personal to each user. Copying never modifies the original."""
     await message.channel.send(text)
 
 
