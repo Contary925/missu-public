@@ -8,7 +8,7 @@ from auto_git_push import sync_to_github
 from functions.perms import *
 from functions.react import react, react_add, react_remove, react_list, react_listall
 from functions.reply import reply, reply_add, reply_remove, reply_list, reply_listall
-from functions.music import play, stop, skip, queue, shuffle, pause, resume, push, playnum, favlist, repeat, play_favlist
+from functions.music import play, stop, skip, queue, shuffle, pause, resume, push, playnum, favlist, repeat, play_favlist, now_playing
 from functions.press_F import press_F
 from functions.playlists import playlist, playlist_default
 from functions.find_lyrics import find_lyrics
@@ -67,6 +67,7 @@ function_map: dict[str, Callable] = {
     "favlist": favlist,
     "repeat": repeat,
     "play_favlist": play_favlist,
+    "now_playing": now_playing,
     "f": press_F,
     "playlist": playlist,
     "ai": ai_mode,
@@ -85,6 +86,9 @@ function_alias: dict[str, str] = {
     "ф": "f",
     "pl": "playlist",
     "pld": "playlistdefault",
+    "np": "now_playing",
+    "нп": "now_playing",
+    "чтоиграет": "now_playing",
     "ии": "ai",
     "текст": "lyrics",
     "дипсик": "ai_deep",
