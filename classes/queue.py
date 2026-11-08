@@ -13,6 +13,7 @@ class Queue():
     def is_empty(self):
         return len(self.songs) == 0
     def set_current(self, song):
+        song["pinned"] = False
         self.current_song = song
     def show(self, page=0):
         songs = []
@@ -23,7 +24,8 @@ class Queue():
         end = start + 20
         result = ''
         for index, song in enumerate(songs[start:end], start=start + 1):
-            result += f'{index}. **{song["title"]}**\n'
+            pinned = "📌 " if song.get("pinned", False) else ""
+            result += f'{index}. {pinned}**{song["title"]}**\n'
         if not result:
             return '❌ The queue is empty!'
         return result
@@ -31,9 +33,18 @@ class Queue():
         random.shuffle(self.songs)
     def push(self, index):
         song = self.songs.pop(index-2)
-        self.songs.insert(0, song)
+        self.insert(0, song)
     def repeat_current(self):
         song = self.current_song
         self.songs.insert(0, song)
     def insert(self, index, song):
-        self.songs.insert(index, song)
+        pos = index
+        while pos < len(self.songs) and self.songs[pos].get("pinned", False) and not song.get("pinned", False):
+            pos += 1
+        self.songs.insert(pos, song)
+    def pin(self, index):
+        self.songs[index-2]["pinned"] = True
+    def unpin(self, index):
+        song = self.songs.pop(index-2)
+        song["pinned"] = False
+        self.insert(index-1, song) #-1 since the song was deleted and everything got shifted
